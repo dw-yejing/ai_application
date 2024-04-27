@@ -9,8 +9,11 @@ DATA_PATH = "./dataset/OCR_Dataset"
 batch_size = 128 * 2
 # 训练轮数
 EPOCH = 50
-device = "cuda" if torch.cuda.is_available() else "cpu"
+adjust_epochs = []
 lr = 1e-3
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 train_data = Reader(DATA_PATH)
 train_data_loader = torch.utils.data.DataLoader(
     train_data, batch_size=batch_size, shuffle=True, num_workers=2
@@ -46,8 +49,6 @@ def adjust_learning_rate():
     optimizer.state_dict()["param_groups"][0]["lr"] *= 0.1
 
 
-adjust_epochs = []
-
 if __name__ == "__main__":
     timestamp = int(time.time())
     for i in range(EPOCH):
@@ -70,5 +71,5 @@ if __name__ == "__main__":
                 os.mkdir("checkpoint")
             torch.save(
                 optimal_model,
-                os.path.join(os.getcwd(), "checkpoint", f"ckpt-{epoch_loss}.pth"),
+                os.path.join(os.getcwd(), "checkpoint", f"ckpt-{timestamp}.pth"),
             )

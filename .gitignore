@@ -3,7 +3,7 @@ checkpoint/
 dataset/
 data/
 output/
-
+*.zip
 
 ######################
 # Project Specific

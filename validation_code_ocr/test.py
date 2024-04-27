@@ -6,8 +6,8 @@ import PIL.Image as Image
 import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-checkpoint_path = "checkpoint/ckpt-0.02484628855017945.pth"
-file_path = "sample_img/8403.png"
+checkpoint_path = "checkpoint/ckpt-1714205773.pth"
+file_path = "sample_img/9264.jpg"
 
 IMAGE_SHAPE_C = 3
 IMAGE_SHAPE_H = 30
