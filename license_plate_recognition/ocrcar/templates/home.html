@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入样式文件 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vant@2.12/lib/index.css"
+    />
+
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.12/lib/vant.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script>
+
+    <title>车牌自动识别</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="background">
+        <img
+          src="https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/bg2.jpg"
+          width="100%"
+          height="100%"
+          alt=""
+        />
+      </div>
+      <div class="content">
+        <div class="nav">
+          <ul>
+            <li>
+              <a id="nav-left" href="https://oneflow.cloud/">
+                <img
+                  src="https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/of.png"
+                  width="30px"
+                  height="30px"
+                  style="vertical-align: middle"
+                />
+                <span style="color: azure">智能云</span>
+              </a>
+            </li>
+            <li>
+              <a id="nav-right" @click="ercode">
+                <img
+                  src="https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/app.png"
+                  width="25px"
+                  height="25px"
+                  style="vertical-align: middle"
+                />
+                <span>手机端</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="light_weixin" class="white_content">
+          <img src="{{param_value}}" />
+        </div>
+        <div id="fade" class="black_overlay" @click="closeWindow"></div>
+        <div class="cards">
+          <img
+            src="https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/model-web.png"
+            width="80px"
+            height="200px"
+            style="vertical-align: middle"
+          />
+          <div id="cleft">
+            <span id="cleft-text1">车牌自动识别系统演示</span>
+            <span id="cleft-text2">
+              基于PyTorch框架搭建的CRNN模型进行车牌自动识别，模型采用ResNet34作为视觉特征提取器，利用BiLSTM处理序列。请点击下方上传图片的图标上传车牌进行识别(默认车牌图片如右所示):
+            </span>
+            <div class="upimage">
+              <van-uploader
+                id="image"
+                name="image"
+                :after-read="afterRead"
+                :max-count="1"
+              />
+            </div>
+          </div>
+          <div id="cright">
+            <div class="card" style="width: 18rem">
+              <p>测试车牌:</p>
+              <img
+                class="card-img-top"
+                :src="image_url"
+                alt="Card image cap"
+                style="width: 180px; height: 100px"
+              />
+              <div class="card-body">
+                <p>识别车牌号:</p>
+                <van-field
+                  v-model="prediction"
+                  placeholder=""
+                  style="background-color: transparent"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module">
+    new Vue({
+      el: "#app",
+      methods: {
+        ercode() {
+          document.getElementById("light_weixin").style.display = "block";
+          document.getElementById("fade").style.display = "block";
+        },
+        closeWindow() {
+          document.getElementById("light_weixin").style.display = "none";
+          document.getElementById("fade").style.display = "none";
+        },
+        hideModal() {
+          this.show = false;
+        },
+
+        submit() {
+          this.show = false;
+        },
+        afterRead(file) {
+          var vue_obj = this;
+          file.status = "uploading";
+          file.message = "上传中";
+          new Compressor(file.file, {
+            quality: 0.6,
+            maxWidth: 1024,
+            maxHeight: 960,
+            success(result) {
+              const formData = new FormData();
+              formData.append("image", result, result.name);
+              axios.post("", formData).then((res) => {
+                vue_obj.image_url = res.data.data.image_url;
+                vue_obj.prediction = res.data.data.prediction;
+                vant.Toast(res.data.data.prediction);
+              });
+            },
+            error(err) {
+              console.log(err.message);
+            },
+          });
+        },
+      },
+      data() {
+        return {
+          image_url:
+            "https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/demo.jpg",
+          prediction: "京A 88888",
+        };
+      },
+    });
+    Vue.use(vant.Uploader);
+    Vue.use(vant.Col);
+    Vue.use(vant.Row);
+    Vue.use(vant.VanImage);
+    Vue.use(vant.Toast);
+    Vue.use(vant.NavBar);
+    Vue.use(vant.Field);
+  </script>
+  <style>
+    .black_overlay {
+      display: none;
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      background-color: #00c0a5;
+      z-index: 1001;
+      -moz-opacity: 0.8;
+      opacity: 0.8;
+      filter: alpha(opacity=50);
+    }
+
+    .white_content {
+      border-radius: 20px;
+      display: none;
+      position: absolute;
+      top: 30%;
+      left: 40%;
+      background-color: #ffffff;
+      z-index: 1002;
+      overflow: auto;
+    }
+    .background {
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      position: absolute;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .cards {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12%;
+    }
+    .card-body {
+      margin-top: 12%;
+    }
+    .nav {
+      width: 80%;
+      height: 1%;
+    }
+    .primary {
+      margin-top: 50px;
+      width: 120px;
+      height: 50px;
+      border: none;
+      border-radius: 12px;
+      background: #409eff;
+    }
+    .upimage {
+      margin-top: 15px;
+    }
+    ul {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-content: center;
+      margin: 10px;
+    }
+    li {
+      list-style-type: none;
+      width: 100px;
+      color: #ffffff;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .btn {
+      display: flex;
+      flex-direction: row;
+    }
+    #cleft {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 40%;
+      height: 100%;
+      margin-left: 100px;
+      color: #ffffff;
+    }
+    #cleft-text1 {
+      font-size: 40px;
+    }
+    #cleft-text2 {
+      margin-top: 25px;
+      font-size: 18px;
+    }
+    #cright {
+      margin-left: 150px;
+      height: 100%;
+      color: #ffffff;
+    }
+    input.van-field__control {
+      color: #ffffff;
+    }
+  </style>
+</html>

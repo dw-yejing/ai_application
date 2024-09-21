@@ -81,4 +81,4 @@ def anchor_positive_pairs(num_batchs=1000):
     preprocess(class_idx_to_train_idxs, x_train, y_train)
     return reader_creator(num_batchs)
 
-# pairs_train_reader = anchor_positive_pairs(num_batchs=1000)
+pairs_train_reader = anchor_positive_pairs(num_batchs=1000)

@@ -5,11 +5,10 @@ import os
 import time
 
 # 数据集路径设置
-DATA_PATH = "./dataset/OCR_Dataset"
+DATA_PATH = r"F:\dataset\validation_code"
 batch_size = 128 * 2
 # 训练轮数
-EPOCH = 50
-adjust_epochs = []
+EPOCH = 30
 lr = 1e-3
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -24,6 +23,9 @@ model = CRNN()
 model.to(device)
 loss_func = torch.nn.CTCLoss(blank=10)
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+scheduler = torch.optim.lr_scheduler.MultiStepLR(
+    optimizer, milestones=[60, 90], gamma=0.1
+)
 optimal_model = {"loss": 1000000, "stat": model.state_dict(), "lr": 0.1}
 
 
@@ -41,12 +43,9 @@ def train():
         loss_value = loss.item()
         loss.backward()
         optimizer.step()
+        scheduler.step()
         # 打印训练信息
         epoch_loss += loss_value
-
-
-def adjust_learning_rate():
-    optimizer.state_dict()["param_groups"][0]["lr"] *= 0.1
 
 
 if __name__ == "__main__":
@@ -55,8 +54,6 @@ if __name__ == "__main__":
         epoch_loss = 0
         print("-------第 {} 轮训练开始-------".format(i + 1))
         train()
-        if i in adjust_epochs:
-            adjust_learning_rate(optimizer)
         print(f'lr: {optimizer.state_dict()["param_groups"][0]["lr"]}')
 
         print(f"epoch: {i} loss: {epoch_loss}")
