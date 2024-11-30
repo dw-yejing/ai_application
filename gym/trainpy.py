@@ -38,7 +38,7 @@ def train(env, model, optimizer, num_episodes):
             action_probs = F.softmax(action_probs, dim=-1)
             action_dist = torch.distributions.Categorical(action_probs)
             action = action_dist.sample()
-            log_prob = action_dist.log_prob(action)
+            log_prob = action_dist.log_prob(action) # 获取采样的概率对数
             log_probs.append(log_prob)
 
             next_state, reward, done, _ = env.step(action.item())
