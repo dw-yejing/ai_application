@@ -1,7 +1,8 @@
 import gym
 import torch
 import torch.nn as nn
-from util.save_load import load_ckpt, generate_video
+from util.save_load import load_ckpt
+from util.visualizer import generate_video
 import torch.nn.functional as F
 import numpy as np
 
@@ -57,5 +58,5 @@ if __name__ == "__main__":
     env.close()
     frames = np.load("out/frames.npy")
     rewards = np.load("out/rewards.npy")
-    generate_video(frames, rewards)
+    generate_video(frames, rewards, video_name="out/a.mp4")
     print("=== video generated ===")
