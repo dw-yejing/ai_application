@@ -70,7 +70,7 @@ local.properties
 *.ids
 *.orig
 classes/
-out/
+# out/
 
 ######################
 # Visual Studio Code

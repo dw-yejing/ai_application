@@ -142,50 +142,18 @@ def inference(self,imgPath=""):
     return  output_label
 ```
 
-## 使用指南
+# 下载模型
 
-“Fork” 本项目，并填写相关信息。（可[下载](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/%E8%B5%A3ZDB16Q.jpg)测试车牌）
+## detect model
 
-### 1、项目部署
+目录：\ocrcar\models\save_models\detector.pt
 
-点击**部署**按钮，选择项目文件 ocrcar ：
+链接: https://pan.baidu.com/s/1ikrJfOL1PLd8Z3dQgSJFag?pwd=i397
 
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/deploy1.png)
 
-填写基本信息：
 
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/deploy2.png)
+## recognizer model
 
-选择运行环境，并设置启动命令`cd /workspace/ocrcar && ./run.sh`，端口号设置为 5000：
+目录：\ocrcar\recognizer\save_models\car_plate_crnn.pt
 
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/deploy3.png)
-
-### 2、创建容器
-
-点击**运行**按钮，选择服务器型号：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/run1.png)
-
-点击**确定**按钮，容器开始创建：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/create.png)
-
-创建完成后显示如下：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/show.png)
-
-### 3、系统运行
-
-点击**测试**按钮进入 系统前端页面：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/web1.png)
-
-上传需要识别的图片，系统返回识别的结果：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/web2.png)
-
-点击“手机端”，手机扫码进入：
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220218-leitao-voiceclone/app.png)
-
-![image](https://oneflow-public.oss-cn-beijing.aliyuncs.com/OneCloud/img/20220117-leitao-ocr_car/res.png)
+链接: https://pan.baidu.com/s/1bNRDIzgnCBh4laKA_xl1Vg?pwd=m7gm 
