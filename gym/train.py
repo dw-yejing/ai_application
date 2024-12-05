@@ -73,7 +73,7 @@ def train(env, model, optimizer, num_episodes):
             print(f"Episode {episode}: Total Reward = {total_reward}; loss: {loss.item()}")
         if total_reward > checkpoint['best_reward']:
             checkpoint['best_reward'] = total_reward
-            save_ckpt(model, "runs", optimizer, total_reward)
+            save_ckpt(model, "out", optimizer, total_reward)
 
 if __name__ == "__main__":
     # 创建CartPole环境
