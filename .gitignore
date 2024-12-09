@@ -4,6 +4,7 @@ dataset/
 data/
 output/
 *.zip
+__pycache__/
 
 ######################
 # Project Specific
